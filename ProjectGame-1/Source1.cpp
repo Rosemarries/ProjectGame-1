@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+/*#include <SFML/Graphics.hpp>
 int vain()
 {
 	sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
@@ -17,4 +17,4 @@ int vain()
 		window.display();
 	}
 	return 0;
-}
+}*/
