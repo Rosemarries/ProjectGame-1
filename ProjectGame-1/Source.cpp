@@ -6,7 +6,7 @@
 #include<time.h>
 #include<thread>
 #include<math.h>
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 #define scount 80
 #define screen_x 80
 #define screen_y 25
@@ -17,7 +17,7 @@ COORD bufferSize = { screen_x,screen_y };
 COORD characterPos = { 0,0 };
 COORD monster[scount];
 COORD character;
-COORD characterBullet[20];
+COORD characterBullet;
 COORD displayHp;
 DWORD fdwMode;
 SMALL_RECT windowSize = { 0,0,screen_x - 1,screen_y - 1 };
@@ -33,11 +33,11 @@ struct character_status {
 };
 
 struct character_bullet {
-	int bulletVectorX[20];
-	int bulletVectorY[20];
-	bool bulletState[20];
+	int bulletVectorX;
+	int bulletVectorY;
+	bool bulletState;
 	int bulletDamage = 1;
-	float bulletAngle[20];
+	float bulletAngle;
 };
 
 struct artifact {
@@ -72,9 +72,9 @@ void fill_character_to_buffer() {
 	consoleBuffer[character.X + screen_x * character.Y].Attributes = 7;
 }
 
-void fill_bullet_to_buffer(int j) {
-	consoleBuffer[characterBullet[j].X + screen_x * characterBullet[j].Y].Char.AsciiChar = '*';
-	consoleBuffer[characterBullet[j].X + screen_x * characterBullet[j].Y].Attributes = 6;
+void fill_bullet_to_buffer() {
+	consoleBuffer[characterBullet.X + screen_x * characterBullet.Y].Char.AsciiChar = '*';
+	consoleBuffer[characterBullet.X + screen_x * characterBullet.Y].Attributes = 6;
 }
 
 void fill_display_hp_to_buffer(int n) {
@@ -156,42 +156,47 @@ int main() {
 					int posx = eventBuffer[i].Event.MouseEvent.dwMousePosition.X;
 					int posy = eventBuffer[i].Event.MouseEvent.dwMousePosition.Y;
 					if (eventBuffer[i].Event.MouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED) {
-						for (int j = 0; j < 20; j++) {
-							character_bullet.bulletState[j] = 1;
-							characterBullet[j].X = character.X;
-							characterBullet[j].Y = character.Y;
-							character_bullet.bulletAngle[j] = (float)180/PI*atan2(abs(posy - character.Y) , abs(posx - character.X));
-							if (character_bullet.bulletState[j] == 1) {
-								if (character.X < posx) {
-									if (character_bullet.bulletAngle[j] <= 45) {
-										character_bullet.bulletVectorX[j] = 1;
-										character_bullet.bulletVectorY[j] = 0;
-									}
-									else if (character_bullet.bulletAngle[j] > 45) {
-										character_bullet.bulletVectorX[j] = 0;
-										character_bullet.bulletVectorY[j] = -1;
-									}
+						character_bullet.bulletState = 1;
+						characterBullet.X = character.X;
+						characterBullet.Y = character.Y;
+						character_bullet.bulletAngle = (float)180/PI*atan2(abs(posy - character.Y) , abs(posx - character.X));
+						if (character_bullet.bulletState == 1) {
+							if (character.X < posx) {
+								if (character_bullet.bulletAngle <= 45) {
+									character_bullet.bulletVectorX = 1;
+									character_bullet.bulletVectorY = 0;
 								}
-								else if (character.X >= posx) {
-									if (character_bullet.bulletAngle[j] <= 45) {
-										character_bullet.bulletVectorX[j] = -1;
-										character_bullet.bulletVectorY[j] = 0;
-									}
-									else if (character_bullet.bulletAngle[j] > 45) {
-										character_bullet.bulletVectorX[j] = 0;
-										character_bullet.bulletVectorY[j] = 1;
-									}
+								else if (character_bullet.bulletAngle > 45) {
+									character_bullet.bulletVectorX = 0;
+									character_bullet.bulletVectorY = -1;
 								}
-								characterBullet[j].X += character_bullet.bulletVectorX[j];
-								characterBullet[j].Y += character_bullet.bulletVectorY[j];
-								fill_bullet_to_buffer(j);
-								fill_buffer_to_console();
+							}
+							else if (character.X >= posx) {
+								if (character_bullet.bulletAngle <= 45) {
+									character_bullet.bulletVectorX = -1;
+									character_bullet.bulletVectorY = 0;
+								}
+								else if (character_bullet.bulletAngle > 45) {
+									character_bullet.bulletVectorX = 0;
+									character_bullet.bulletVectorY = 1;
+								}
 							}
 						}
 					}
 				}
 			}
 			delete[] eventBuffer;
+		}
+		if (character_bullet.bulletState == 1) {
+			if (characterBullet.X < 0 || characterBullet.X > screen_x || characterBullet.Y < 0 || characterBullet.Y > screen_y) {
+				character_bullet.bulletState = 0;
+			}
+			else {
+				characterBullet.X += character_bullet.bulletVectorX;
+				characterBullet.Y += character_bullet.bulletVectorY;
+				fill_bullet_to_buffer();
+				fill_buffer_to_console();
+			}
 		}
 		fill_character_to_buffer();
 		fill_buffer_to_console();
