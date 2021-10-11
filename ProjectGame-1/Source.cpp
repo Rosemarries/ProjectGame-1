@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+/*#define _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
 #include<conio.h>
 #include<stdlib.h>
@@ -6,7 +6,7 @@
 #include<time.h>
 #include<thread>
 #include<math.h>
-//#include <SFML/Graphics.hpp>
+#include<SFML/Graphics.hpp>
 #define scount 80
 #define screen_x 100
 #define screen_y 40
@@ -271,4 +271,4 @@ xxx:
 	Beep(500, 100);
 	printf("GAME OVER");
 	return 0;
-}
+}*/
