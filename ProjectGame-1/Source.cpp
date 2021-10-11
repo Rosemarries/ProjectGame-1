@@ -161,24 +161,36 @@ int main() {
 						characterBullet.Y = character.Y;
 						character_bullet.bulletAngle = (float)180/PI*atan2(abs(posy - character.Y) , abs(posx - character.X));
 						if (character_bullet.bulletState == 1) {
-							if (character.X < posx) {
+							if (character.X <= posx) {
 								if (character_bullet.bulletAngle <= 45) {
 									character_bullet.bulletVectorX = 1;
 									character_bullet.bulletVectorY = 0;
 								}
 								else if (character_bullet.bulletAngle > 45) {
-									character_bullet.bulletVectorX = 0;
-									character_bullet.bulletVectorY = -1;
+									if (character.Y < posy) {
+										character_bullet.bulletVectorX = 0;
+										character_bullet.bulletVectorY = 1;
+									}
+									else {
+										character_bullet.bulletVectorX = 0;
+										character_bullet.bulletVectorY = -1;
+									}
 								}
 							}
-							else if (character.X >= posx) {
+							else if (character.X > posx) {
 								if (character_bullet.bulletAngle <= 45) {
 									character_bullet.bulletVectorX = -1;
 									character_bullet.bulletVectorY = 0;
 								}
 								else if (character_bullet.bulletAngle > 45) {
-									character_bullet.bulletVectorX = 0;
-									character_bullet.bulletVectorY = 1;
+									if (character.Y < posy) {
+										character_bullet.bulletVectorX = 0;
+										character_bullet.bulletVectorY = 1;
+									}
+									else {
+										character_bullet.bulletVectorX = 0;
+										character_bullet.bulletVectorY = -1;
+									}
 								}
 							}
 						}
@@ -188,7 +200,7 @@ int main() {
 			delete[] eventBuffer;
 		}
 		if (character_bullet.bulletState == 1) {
-			if (characterBullet.X < 0 || characterBullet.X > screen_x || characterBullet.Y < 0 || characterBullet.Y > screen_y) {
+			if (characterBullet.X <= 0 || characterBullet.X >= screen_x - 1 || characterBullet.Y <= 0 || characterBullet.Y >= screen_y - 1) {
 				character_bullet.bulletState = 0;
 			}
 			else {
