@@ -17,8 +17,9 @@ struct player_status {
 };
 
 struct player_bullet {
-	int bulletVectorX;
-	int bulletVectorY;
+	float bulletVectorX;
+	float bulletVectorY;
+	float bulletSpeed = 2;
 	bool bulletState = 0;
 	int bulletDamage = 1;
 	float bulletAngle;
@@ -40,8 +41,9 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(screen_x, screen_y), "GAME START!");
 	sf::RectangleShape player(sf::Vector2f(90.0f, 110.0f));
 	sf::CircleShape playerBullet(20.0f);
-	player.setOrigin(50.0f, 62.5f);
+	player.setOrigin(45.0f, 62.5f);
 	player.setPosition(100.0f, 100.0f);
+
 	sf::Texture playerTexture;
 	sf::Texture playerBulletTexture;
 	playerTexture.loadFromFile("TheLost-4.png");
@@ -105,33 +107,33 @@ int main()
 			if (player_bullet.bulletState == 1) {
 				if (playerPos.x <= mousePos.x) {
 					if (player_bullet.bulletAngle <= 45) {
-						player_bullet.bulletVectorX = 1;
+						player_bullet.bulletVectorX = player_bullet.bulletSpeed;
 						player_bullet.bulletVectorY = 0;
 					}
 					else {
 						if (playerPos.y < mousePos.y) {
 							player_bullet.bulletVectorX = 0;
-							player_bullet.bulletVectorY = 1;
+							player_bullet.bulletVectorY = player_bullet.bulletSpeed;
 						}
 						else {
 							player_bullet.bulletVectorX = 0;
-							player_bullet.bulletVectorY = -1;
+							player_bullet.bulletVectorY = (-1) * player_bullet.bulletSpeed;
 						}
 					}
 				}
 				else {
 					if (player_bullet.bulletAngle <= 45) {
-						player_bullet.bulletVectorX = -1;
+						player_bullet.bulletVectorX = (-1) * player_bullet.bulletSpeed;
 						player_bullet.bulletVectorY = 0;
 					}
 					else {
 						if (playerPos.y < mousePos.y) {
 							player_bullet.bulletVectorX = 0;
-							player_bullet.bulletVectorY = 1;
+							player_bullet.bulletVectorY = player_bullet.bulletSpeed;
 						}
 						else {
 							player_bullet.bulletVectorX = 0;
-							player_bullet.bulletVectorY = -1;
+							player_bullet.bulletVectorY = (-1) * player_bullet.bulletSpeed;
 						}
 					}
 				}
