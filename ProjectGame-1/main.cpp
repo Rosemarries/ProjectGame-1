@@ -4,7 +4,7 @@
 #include<SFML/Graphics.hpp>
 #include"Animation.h"
 
-#define screen_x 1080
+#define screen_x 720
 #define screen_y 720
 #define PI 3.14159265
 
@@ -20,7 +20,7 @@ struct player_bullet {
 	float bulletVectorX;
 	float bulletVectorY;
 	float bulletSpeed = 2;
-	bool bulletState = 0;
+	int bulletState = 0;
 	int bulletDamage = 1;
 	float bulletAngle;
 };
@@ -39,9 +39,9 @@ struct artifact {
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(screen_x, screen_y), "GAME START!");
-	sf::RectangleShape player(sf::Vector2f(90.0f, 110.0f));
-	sf::CircleShape playerBullet(20.0f);
-	player.setOrigin(45.0f, 62.5f);
+	sf::RectangleShape player(sf::Vector2f(80.0f, 100.0f));
+	sf::CircleShape playerBullet(15.0f);
+	player.setOrigin(40.0f, 50.5f);
 	player.setPosition(100.0f, 100.0f);
 
 	sf::Texture playerTexture;
@@ -60,6 +60,8 @@ int main()
 	float deltaTime = 0.0f;
 	int playerPicRow = 0;
 	sf::Clock clock;
+	sf::Clock bulletTime;
+	float bulletShootTime = 0.0f;
 	
     while (window.isOpen())
     {
