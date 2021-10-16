@@ -77,6 +77,9 @@ int main()
         }
 
 		sf::Vector2f playerPos = player.getPosition();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+			goto xx;
+		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
 			if (playerPos.x > 0) {
 				player.move(-0.75f, 0.0f);
@@ -159,6 +162,7 @@ int main()
 		}
         window.display();
     }
+xx:
 
     return 0;
 }

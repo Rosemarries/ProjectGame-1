@@ -156,7 +156,7 @@ sfml-window-d.lib
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="draftgame-1.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
